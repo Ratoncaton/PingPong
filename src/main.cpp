@@ -1,6 +1,9 @@
 #include "raylib.h"
 #include <iostream>
 
+int player_score = 0;
+int cpu_score = 0;
+
 class Ball{
     public:
         float x, y;
@@ -19,9 +22,27 @@ class Ball{
             //Reverse Speed
             speed_y *= -1;
         }
-        if(x + radius >= GetScreenWidth() ||x - radius <= 0 ){
-            speed_x *= -1;
+        if(x + radius >= GetScreenWidth()) //CPU wins
+        {
+            cpu_score++;
+            Reset();
         }
+        
+        if (x - radius <= 0 ) //Player Wins
+        {
+            player_score++;
+            Reset();
+        }
+    }
+
+    void Reset(){
+        x = GetScreenWidth()/2;
+        y = GetScreenHeight()/2;
+
+        int speed_choices[2] = {-1,1};
+        speed_x *= speed_choices[GetRandomValue(0,1)];
+        speed_y *= speed_choices[GetRandomValue(0,1)];
+
     }
 
 };
@@ -132,7 +153,9 @@ int main(){
         cpu.Draw();
         player.Draw();
 
-        
+        //Score
+        DrawText(TextFormat("%i", cpu_score), screenWidth/4 - 20, 20, 80, WHITE);
+        DrawText(TextFormat("%i", player_score), 3 * screenWidth/4 - 20, 20, 80, WHITE);
 
         EndDrawing();
     }
