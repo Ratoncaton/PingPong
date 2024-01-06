@@ -47,7 +47,7 @@ class Paddle{
         if(y <= 0){
             y = 0;
         }
-        if(y + height <= GetScreenHeight()){
+        if(y + height >= GetScreenHeight()){
             y = GetScreenHeight() - height;
         }
     }
